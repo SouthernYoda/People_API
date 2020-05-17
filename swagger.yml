@@ -38,7 +38,6 @@ paths:
                 timestamp:
                   type: string
                   description: Creation/Update timestamp of the person
-
     post:
       operationId: people.create
       tags:
