@@ -13,6 +13,7 @@ app = connex_app.app
 
 # MySQL Connection
 app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://root:test_service@10.10.10.3:3306/People_API'
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 # Create the SqlAlchemy db instance
 db = SQLAlchemy(app)
