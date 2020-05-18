@@ -13,7 +13,7 @@ def read_all():
     notes = Note.query.order_by(db.desc(Note.timestamp)).all()
 
     # Serialize the list of notes from our data
-    note_schema = NoteSchema(many=True, exclude=["person.notes"])
+    note_schema = NoteSchema(many=True, exclude=["person"])
     data = note_schema.dump(notes)
     return data
 
@@ -54,7 +54,7 @@ def create(person_id, note):
     :return:                201 on success
     """
     # get the parent person
-    person = Person.query.filter(Person.person_id == person_id).one_or_none()
+    person = (Person.query.filter(Person.person_id == person_id).one_or_none())
 
     # Was a person found?
     if person is None:

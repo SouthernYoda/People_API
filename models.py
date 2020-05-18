@@ -34,7 +34,7 @@ class PersonSchema(ma.SQLAlchemyAutoSchema):
         load_instance = True
     notes = fields.Nested('PersonNoteSchema', default=[], many=True)
 
-class PersonNoteSchema(ma.SQLAlchemyAutoSchema):
+class PersonNoteSchema(ma.SQLAlchemySchema):
     """
     This class exists to get around recursion issue
     """
@@ -56,12 +56,12 @@ class NoteSchema(ma.SQLAlchemyAutoSchema):
 
     person = fields.Nested("NotePersonSchema", default=None)
 
-class NotePersonSchema(ma.SQLAlchemyAutoSchema):
+class NotePersonSchema(ma.SQLAlchemySchema):
     """
     This class exists to get around a recursion issue
     """
-    def __init__(self, **kwargs):
-        super().__init__(strict=True, **kwargs)
+    # def __init__(self, **kwargs):
+    #     super().__init__(strict=True, **kwargs)
 
     person_id = fields.Int()
     lname = fields.Str()

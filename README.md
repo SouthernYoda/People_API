@@ -11,6 +11,7 @@ Project Setup
 Install Flask
   python -m pip install Flask==1.1.1
   python -m pip freeze > requirements.txt
+  pip install -r requirements.txt
 
 Run flask
   python app.py
