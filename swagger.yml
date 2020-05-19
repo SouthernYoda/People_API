@@ -5,7 +5,7 @@ info:
   title: Swagger Rest Article
 
 paths:
-  /people:
+  "/people":
     get:
       operationId: people.read_all
       tags:
@@ -54,40 +54,27 @@ paths:
       tags:
         - People
       summary: Create a person
-      description: Create a new person
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                fname:
-                  type: string
-                  description: First name of person to create
-                lname:
-                  type: string
-                  description: Last name of person to create
-        description: Person to create
-        required: true
+      parameters:
+        - name: fname
+          in: query
+          description: Persons first name
+          required: true
+          schema:
+            type: string
+        - name: lname
+          in: query
+          description: Person's last name
+          required: true
+          schema:
+            type: string
       responses:
         "201":
           description: Successfully created person
           content:
             application/json:
               schema:
-                properties:
-                  person_id:
-                    type: string
-                    description: Id of the person
-                  fname:
-                    type: string
-                    description: First name of the person
-                  lname:
-                    type: string
-                    description: Last name of the person
-                  timestamp:
-                    type: string
-                    description: Creation/Update timestamp of the person record
+                $ref: '#/components/schemas/Person'
+
   "/people/{person_id}":
     get:
       operationId: people.read_one
@@ -169,19 +156,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  person_id:
-                    type: string
-                    description: Id of the person in the database
-                  fname:
-                    type: string
-                    description: First name of the person
-                  lname:
-                    type: string
-                    description: Last name of the person
-                  timestamp:
-                    type: string
-                    description: Creation/Update timestamp of the person record
+                $ref: '#/components/schemas/Person'
     delete:
       operationId: people.delete
       tags:
@@ -198,7 +173,7 @@ paths:
       responses:
         "200":
           description: Successfully deleted a person
-  /notes:
+  "/notes":
     get:
       operationId: notes.read_all
       tags:
@@ -269,19 +244,8 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  person_id:
-                    type: integer
-                    description: Id of the person associated with the note
-                  note_id:
-                    type: integer
-                    description: Id of the created note
-                  content:
-                    type: string
-                    description: Text content of the note
-                  timestamp:
-                    type: string
-                    description: Creation/Update timestamp of the person record
+                $ref: '#/components/schemas/Note'
+
   "/people/{person_id}/notes/{note_id}":
     get:
       operationId: notes.read_one
@@ -308,20 +272,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  note_id:
-                    type: integer
-                    description: Id of the note
-                  person_id:
-                    type: integer
-                    description: Id of the person note associated with
-                  content:
-                    type: string
-                    description: Text content of the note
-                  timestamp:
-                    type: string
-                    description: Creation/Update timestamp of the note record
+                $ref: '#/components/schemas/Note'
     put:
       operationId: notes.update
       tags:
@@ -356,19 +307,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  note_id:
-                    type: string
-                    description: Id of the note associated with a person
-                  person_id:
-                    type: integer
-                    description: Id of the person in the database
-                  content:
-                    type: string
-                    description: Text content of the updated note
-                  timestamp:
-                    type: string
-                    description: Creation/Update timestamp of the note record
+                $ref: '#/components/schemas/Note'
     delete:
       operationId: notes.delete
       tags:
@@ -391,6 +330,49 @@ paths:
       responses:
         "200":
           description: Successfully deleted a note
+
+components:
+  schemas:
+    Person:
+      type: object
+      properties:
+        person_id:
+          type: integer
+          description: Id of associated person
+        fname:
+          type: string
+          description: First name of associated person
+        lname:
+          type: string
+          description: Last name of associated person
+        timestamp:
+          type: string
+          description: Creation/Update timestamp of the note record
+    Note:
+      type: object
+      properties:
+        note_id:
+          type: integer
+          description: Id of the note
+        person_id:
+          type: integer
+          description: Id of the person note associated with
+        content:
+          type: string
+          description: Text content of the note
+        timestamp:
+          type: string
+          description: Creation/Update timestamp of the note record
+    CreatePerson:
+      type: object
+      properties:
+        fname:
+          type: string
+          description: First name of person to create
+        lname:
+          type: string
+          description: Last name of person to create
+
 servers:
   - url: http://localhost:5000/api
     description: local development instance

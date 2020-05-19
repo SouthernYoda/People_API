@@ -1,3 +1,5 @@
+import connexion
+
 from flask import make_response, abort
 from config import db
 from models import Person, PersonSchema, Note
@@ -45,15 +47,18 @@ def read_one(person_id):
         abort(404, f"Person not found for Id: {person_id}")
 
 
-def create(person):
+def create(fname, lname):
     """
     This function creates a new person in the people structure
     based on the passed in person data
     :param person:  person to create in people structure
     :return:        201 on success, 406 on person exists
     """
-    fname = person.get("fname")
-    lname = person.get("lname")
+
+    # fname = person.get("fname")
+    # lname = person.get("lname")
+
+    print(f"firstname: {fname}, lastname: {lname}")
 
     existing_person = (
         Person.query.filter(Person.fname == fname)
@@ -66,7 +71,7 @@ def create(person):
 
         # Create a person instance using the schema and the passed in person
         schema = PersonSchema()
-        new_person = schema.load(person, session=db.session)
+        new_person = schema.load({"lname": lname, "fname": fname}, session=db.session)
 
         # Add the person to the database
         db.session.add(new_person)
