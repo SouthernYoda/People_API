@@ -54,8 +54,9 @@ paths:
       tags:
         - People
       summary: Create a person
-      description: Create a new person
       requestBody:
+        description: Create a new person
+        required: True
         content:
           application/json:
             schema:
@@ -67,8 +68,6 @@ paths:
                 lname:
                   type: string
                   description: Last name of person to create
-        description: Person to create
-        required: true
       responses:
         "201":
           description: Successfully created person
