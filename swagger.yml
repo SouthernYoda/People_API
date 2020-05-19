@@ -225,17 +225,12 @@ paths:
           required: true
           schema:
             type: integer
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                content:
-                  type: string
-                  description: Text of the note to create
-        description: Text content of the note to create
-        required: true
+        - name: content
+          in: query
+          description: Text of the note to create
+          required: true
+          schema:
+            type: string
       responses:
         "201":
           description: Successfully created a note
@@ -290,15 +285,12 @@ paths:
           required: true
           schema:
             type: integer
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                content:
-                  type: string
-                  description: Text content of the note to update
+        - name: content
+          in: query
+          description: Text content of the note to update
+          required: true
+          schema:
+            type: string
       responses:
         "200":
           description: Successfully updated note

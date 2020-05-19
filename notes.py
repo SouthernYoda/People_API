@@ -46,7 +46,7 @@ def read_one(person_id, note_id):
         abort(404, f"Note not found for Id: {note_id}")
 
 
-def create(person_id, note):
+def create(person_id, content):
     """
     This function creates a new note related to the passed in person id.
     :param person_id:       Id of the person the note is related to
@@ -62,7 +62,7 @@ def create(person_id, note):
 
     # Create a note schema instance
     schema = NoteSchema()
-    new_note = schema.load(note, session=db.session)
+    new_note = schema.load({"content": content}, session=db.session)
 
     # Add the note to the person and database
     person.notes.append(new_note)
@@ -74,7 +74,7 @@ def create(person_id, note):
     return data, 201
 
 
-def update(person_id, note_id, note):
+def update(person_id, note_id, content):
     """
     This function updates an existing note related to the passed in
     person id.
@@ -94,7 +94,7 @@ def update(person_id, note_id, note):
 
         # turn the passed in note into a db object
         schema = NoteSchema()
-        update = schema.load(note, session=db.session)
+        update = schema.load({"content": content}, session=db.session)
 
         # Set the id's to the note we want to update
         update.person_id = update_note.person_id
