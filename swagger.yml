@@ -54,13 +54,11 @@ paths:
       tags:
         - People
       summary: Create a person
-      parameters:
-        - name: person
-          description: person values
-          required: true
-          in: query
-          schema:
-            $ref: '#/components/schemas/CreatePerson'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePerson'
       responses:
         "201":
           description: Successfully created person
