@@ -138,18 +138,16 @@ paths:
           required: true
           schema:
             type: integer
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                fname:
-                  type: string
-                  description: First name of the person
-                lname:
-                  type: string
-                  description: Last name of the person
+        - name: fname
+          in: query
+          description: First name of the person
+          schema:
+            type: string
+        - name: lname
+          in: query
+          description: Last name of the person
+          schema:
+            type: string
       responses:
         "200":
           description: Successfully updated person

@@ -84,7 +84,7 @@ def create(fname, lname):
     else:
         abort(409, f"Person {fname} {lname} exists already")
 
-def update(person_id, person):
+def update(person_id, fname, lname):
     """
     This function updates an existing person in the people structure
     :param person_id:   Id of the person to update in the people structure
@@ -101,7 +101,7 @@ def update(person_id, person):
 
         # turn the passed in person into a db object
         schema = PersonSchema()
-        update = schema.load(person, session=db.session)
+        update = schema.load({"lname": lname, "fname": fname}, session=db.session)
 
         # Set the id to the person we want to update
         update.person_id = update_person.person_id
