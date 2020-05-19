@@ -54,20 +54,13 @@ paths:
       tags:
         - People
       summary: Create a person
-      requestBody:
-        description: Create a new person
-        required: True
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                fname:
-                  type: string
-                  description: First name of person to create
-                lname:
-                  type: string
-                  description: Last name of person to create
+      parameters:
+        - name: person
+          description: person values
+          required: true
+          in: query
+          schema:
+            $ref: '#/components/schemas/CreatePerson'
       responses:
         "201":
           description: Successfully created person
@@ -363,6 +356,15 @@ components:
         timestamp:
           type: string
           description: Creation/Update timestamp of the note record
+    CreatePerson:
+      type: object
+      properties:
+        fname:
+          type: string
+          description: First name of person to create
+        lname:
+          type: string
+          description: Last name of person to create
 
 servers:
   - url: http://localhost:5000/api
