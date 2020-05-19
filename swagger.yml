@@ -1,18 +1,11 @@
-swagger: "2.0"
+openapi: 3.0.0
 info:
   description: This is the swagger file that goes with our server code
-  version: "1.0.0"
+  version: 2.0.0
   title: Swagger Rest Article
-consumes:
-  - application/json
-produces:
-  - application/json
 
-basePath: /api
-
-# Paths supported by the server application
 paths:
-  /people:
+  "/people":
     get:
       operationId: people.read_all
       tags:
@@ -20,80 +13,69 @@ paths:
       summary: Read the entire set of people, sorted by last name
       description: Read the entire set of people, sorted by last name
       responses:
-        200:
+        "200":
           description: Successfully read people set operation
-          schema:
-            type: array
-            items:
-              properties:
-                person_id:
-                  type: string
-                  description: Id of the person
-                fname:
-                  type: string
-                  description: First name of the person
-                lname:
-                  type: string
-                  description: Last name of the person
-                timestamp:
-                  type: string
-                  description: Creation/Update timestamp of the person
-                notes:
-                  type: array
-                  items:
-                    properties:
-                      person_id:
-                        type: integer
-                        description: Id of this note associated with
-                      note_id:
-                        type: integer
-                        description: Id of this note
-                      content:
-                        type: string
-                        description: content of this note
-                      timestamp:
-                        type: string
-                        description: Create/Update timestamp of this note
-
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    person_id:
+                      type: string
+                      description: Id of the person
+                    fname:
+                      type: string
+                      description: First name of the person
+                    lname:
+                      type: string
+                      description: Last name of the person
+                    timestamp:
+                      type: string
+                      description: Creation/Update timestamp of the person
+                    notes:
+                      type: array
+                      items:
+                        properties:
+                          person_id:
+                            type: integer
+                            description: Id of this note associated with
+                          note_id:
+                            type: integer
+                            description: Id of this note
+                          content:
+                            type: string
+                            description: content of this note
+                          timestamp:
+                            type: string
+                            description: Create/Update timestamp of this note
     post:
       operationId: people.create
       tags:
         - People
       summary: Create a person
-      description: Create a new person
       parameters:
-        - name: person
-          in: body
-          description: Person to create
-          required: True
+        - name: fname
+          in: query
+          description: Persons first name
+          required: true
           schema:
-            type: object
-            properties:
-              fname:
-                type: string
-                description: First name of person to create
-              lname:
-                type: string
-                description: Last name of person to create
+            type: string
+        - name: lname
+          in: query
+          description: Person's last name
+          required: true
+          schema:
+            type: string
       responses:
-        201:
+        "201":
           description: Successfully created person
-          schema:
-            properties:
-              person_id:
-                type: string
-                description: Id of the person
-              fname:
-                type: string
-                description: First name of the person
-              lname:
-                type: string
-                description: Last name of the person
-              timestamp:
-                type: string
-                description: Creation/Update timestamp of the person record
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Person'
 
-  /people/{person_id}:
+  "/people/{person_id}":
     get:
       operationId: people.read_one
       tags:
@@ -104,43 +86,45 @@ paths:
         - name: person_id
           in: path
           description: Id of the person to get
-          type: integer
-          required: True
-      responses:
-        200:
-          description: Successfully read person from people data operation
+          required: true
           schema:
-            type: object
-            properties:
-              person_id:
-                type: string
-                description: Id of the person
-              fname:
-                type: string
-                description: First name of the person
-              lname:
-                type: string
-                description: Last name of the person
-              timestamp:
-                type: string
-                description: Creation/Update timestamp of the person record
-              notes:
-                type: array
-                items:
-                  properties:
-                    person_id:
-                      type: integer
-                      description: Id of person this note is associated with
-                    note_id:
-                      type: integer
-                      description: Id of this note
-                    content:
-                      type: string
-                      description: content of this note
-                    timestamp:
-                      type: string
-                      description: Create/Update timestamp of this note
-
+            type: integer
+      responses:
+        "200":
+          description: Successfully read person from people data operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  person_id:
+                    type: string
+                    description: Id of the person
+                  fname:
+                    type: string
+                    description: First name of the person
+                  lname:
+                    type: string
+                    description: Last name of the person
+                  timestamp:
+                    type: string
+                    description: Creation/Update timestamp of the person record
+                  notes:
+                    type: array
+                    items:
+                      properties:
+                        person_id:
+                          type: integer
+                          description: Id of person this note is associated with
+                        note_id:
+                          type: integer
+                          description: Id of this note
+                        content:
+                          type: string
+                          description: content of this note
+                        timestamp:
+                          type: string
+                          description: Create/Update timestamp of this note
     put:
       operationId: people.update
       tags:
@@ -151,37 +135,26 @@ paths:
         - name: person_id
           in: path
           description: Id the person to update
-          type: integer
-          required: True
-        - name: person
-          in: body
+          required: true
           schema:
-            type: object
-            properties:
-              fname:
-                type: string
-                description: First name of the person
-              lname:
-                type: string
-                description: Last name of the person
+            type: integer
+        - name: fname
+          in: query
+          description: First name of the person
+          schema:
+            type: string
+        - name: lname
+          in: query
+          description: Last name of the person
+          schema:
+            type: string
       responses:
-        200:
+        "200":
           description: Successfully updated person
-          schema:
-            properties:
-              person_id:
-                type: string
-                description: Id of the person in the database
-              fname:
-                type: string
-                description: First name of the person
-              lname:
-                type: string
-                description: Last name of the person
-              timestamp:
-                type: string
-                description: Creation/Update timestamp of the person record
-
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Person'
     delete:
       operationId: people.delete
       tags:
@@ -191,14 +164,14 @@ paths:
       parameters:
         - name: person_id
           in: path
-          type: integer
           description: Id of the person to delete
           required: true
+          schema:
+            type: integer
       responses:
-        200:
+        "200":
           description: Successfully deleted a person
-
-  /notes:
+  "/notes":
     get:
       operationId: notes.read_all
       tags:
@@ -206,38 +179,39 @@ paths:
       summary: Read the entire set of notes for all people, sorted by timestamp
       description: Read the entire set of notes for all people, sorted by timestamp
       responses:
-        200:
+        "200":
           description: Successfully read notes for all people operation
-          schema:
-            type: array
-            items:
-              properties:
-                note_id:
-                  type: integer
-                  description: Id of the note
-                content:
-                  type: string
-                  description: Content of the note
-                timestamp:
-                  type: string
-                  description: Create/Update timestamp of the note
-                person:
-                  type: object
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
                   properties:
-                    person_id:
+                    note_id:
                       type: integer
-                      description: Id of associated person
-                    fname:
+                      description: Id of the note
+                    content:
                       type: string
-                      description: First name of associated person
-                    lname:
-                      type: string
-                      description: Last name of associated person
+                      description: Content of the note
                     timestamp:
                       type: string
-                      description: Create/Update timestamp of associated person
-
-  /people/{person_id}/notes:
+                      description: Create/Update timestamp of the note
+                    person:
+                      type: object
+                      properties:
+                        person_id:
+                          type: integer
+                          description: Id of associated person
+                        fname:
+                          type: string
+                          description: First name of associated person
+                        lname:
+                          type: string
+                          description: Last name of associated person
+                        timestamp:
+                          type: string
+                          description: Create/Update timestamp of associated person
+  "/people/{person_id}/notes":
     post:
       operationId: notes.create
       tags:
@@ -248,37 +222,24 @@ paths:
         - name: person_id
           in: path
           description: Id of person associated with note
-          type: integer
-          required: True
-        - name: note
-          in: body
-          description: Text content of the note to create
-          required: True
+          required: true
           schema:
-            type: object
-            properties:
-              content:
-                type: string
-                description: Text of the note to create
+            type: integer
+        - name: content
+          in: query
+          description: Text of the note to create
+          required: true
+          schema:
+            type: string
       responses:
-        201:
+        "201":
           description: Successfully created a note
-          schema:
-            properties:
-              person_id:
-                type: integer
-                description: Id of the person associated with the note
-              note_id:
-                type: integer
-                description: Id of the created note
-              content:
-                type: string
-                description: Text content of the note
-              timestamp:
-                type: string
-                description: Creation/Update timestamp of the person record
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
 
-  /people/{person_id}/notes/{note_id}:
+  "/people/{person_id}/notes/{note_id}":
     get:
       operationId: notes.read_one
       tags:
@@ -289,31 +250,22 @@ paths:
         - name: person_id
           in: path
           description: Id of person associated with note
-          type: integer
-          required: True
+          required: true
+          schema:
+            type: integer
         - name: note_id
           in: path
           description: Id of note
-          type: integer
-          required: True
-      responses:
-        200:
-          description: Successfully read note for a person
+          required: true
           schema:
-            type: object
-            properties:
-              note_id:
-                type: integer
-                description: Id of the note
-              person_id:
-                type: integer
-                description: Id of the person note associated with
-              content:
-                type: string
-                description: Text content of the note
-              timestamp:
-                type: string
-                description: Creation/Update timestamp of the note record
+            type: integer
+      responses:
+        "200":
+          description: Successfully read note for a person
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
     put:
       operationId: notes.update
       tags:
@@ -324,38 +276,28 @@ paths:
         - name: person_id
           in: path
           description: Id the person to update
-          type: integer
-          required: True
+          required: true
+          schema:
+            type: integer
         - name: note_id
           in: path
           description: Id of the note associated with a person
-          type: integer
-          required: True
-        - name: note
-          in: body
+          required: true
           schema:
-            type: object
-            properties:
-              content:
-                type: string
-                description: Text content of the note to update
+            type: integer
+        - name: content
+          in: query
+          description: Text content of the note to update
+          required: true
+          schema:
+            type: string
       responses:
-        200:
+        "200":
           description: Successfully updated note
-          schema:
-            properties:
-              note_id:
-                type: string
-                description: Id of the note associated with a person
-              person_id:
-                type: integer
-                description: Id of the person in the database
-              content:
-                type: string
-                description: Text content of the updated note
-              timestamp:
-                type: string
-                description: Creation/Update timestamp of the note record
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
     delete:
       operationId: notes.delete
       tags:
@@ -366,13 +308,61 @@ paths:
         - name: person_id
           in: path
           description: Id of person associated with note
-          type: integer
-          required: True
+          required: true
+          schema:
+            type: integer
         - name: note_id
           in: path
           description: Id of note
-          type: integer
-          required: True
+          required: true
+          schema:
+            type: integer
       responses:
-        200:
+        "200":
           description: Successfully deleted a note
+
+components:
+  schemas:
+    Person:
+      type: object
+      properties:
+        person_id:
+          type: integer
+          description: Id of associated person
+        fname:
+          type: string
+          description: First name of associated person
+        lname:
+          type: string
+          description: Last name of associated person
+        timestamp:
+          type: string
+          description: Creation/Update timestamp of the note record
+    Note:
+      type: object
+      properties:
+        note_id:
+          type: integer
+          description: Id of the note
+        person_id:
+          type: integer
+          description: Id of the person note associated with
+        content:
+          type: string
+          description: Text content of the note
+        timestamp:
+          type: string
+          description: Creation/Update timestamp of the note record
+    CreatePerson:
+      type: object
+      properties:
+        fname:
+          type: string
+          description: First name of person to create
+        lname:
+          type: string
+          description: Last name of person to create
+
+servers:
+  - url: http://localhost:5000/api
+    description: local development instance
