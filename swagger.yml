@@ -413,6 +413,7 @@ components:
       bearerFormat: JWT
       x-bearerInfoFunc: auth.decode_token
 
+
 servers:
   - url: http://localhost:5000/api
     description: local development instance
