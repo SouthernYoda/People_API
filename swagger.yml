@@ -13,7 +13,8 @@ paths:
       summary: Read the entire set of people, sorted by last name
       description: Read the entire set of people, sorted by last name
       security:
-        - basic: []
+#        - basic: []
+        - jwt: ['secret']
       responses:
         "200":
           description: Successfully read people set operation
@@ -322,6 +323,35 @@ paths:
       responses:
         "200":
           description: Successfully deleted a note
+  "/auth/login":
+    post:
+      operationId: auth.generate_token
+      tags:
+        - Authentication
+      security:
+        - basic: []
+      responses:
+        200:
+          description: secret response
+          content:
+            'text/plain':
+              schema:
+                type:
+                  string
+  "/auth/print-token":
+    get:
+      description: Return token contents
+      operationId: auth.print_token
+      security:
+        - jwt: ['secret']
+      responses:
+        "200":
+          description: secret response
+          content:
+            'text/plain':
+              schema:
+                type: string
+
 
 components:
   schemas:
@@ -377,6 +407,12 @@ components:
         type: http
         scheme: basic
         x-basicInfoFunc: auth.basic_auth
+    jwt:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      x-bearerInfoFunc: auth.decode_token
+
 
 servers:
   - url: http://localhost:5000/api
