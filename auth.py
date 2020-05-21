@@ -14,6 +14,9 @@ JWT_ALGORITHM = 'HS256'
 def decode_token(token):
     try:
         return jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+    except jwt.ExpiredSignatureError:
+        print("Token Expired")
+        six.raise_from(Unauthorized, e)
     except JWTError as e:
         six.raise_from(Unauthorized, e)
 
