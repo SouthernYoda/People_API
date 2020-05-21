@@ -29,7 +29,7 @@ def generate_token():
         "iss": JWT_ISSUER,
         "iat": timestamp,
         "exp": timestamp + timedelta(seconds=JWT_LIFETIME_SECONDS),
-        "sub": str(user_id),
+        "user_id": str(user_id),
     }
 
     return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
@@ -52,5 +52,8 @@ def basic_auth(username, password, required_scopes=None):
 
     return info
 
-def get_secret(user) -> str:
-    return f"you are {user} and the secret is a secret"
+def print_token(user, token_info) -> str:
+
+    token_contents = "The token contents are \n {token} \n user_id {user_id}".format(token=token_info, user_id=token_info['user_id'])
+
+    return token_contents

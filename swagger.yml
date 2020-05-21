@@ -338,6 +338,20 @@ paths:
               schema:
                 type:
                   string
+  "/auth/print-token":
+    get:
+      description: Return token contents
+      operationId: auth.print_token
+      security:
+        - jwt: ['secret']
+      responses:
+        "200":
+          description: secret response
+          content:
+            'text/plain':
+              schema:
+                type: string
+
 
 components:
   schemas:
