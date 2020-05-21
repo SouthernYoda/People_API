@@ -12,6 +12,9 @@ paths:
         - People
       summary: Read the entire set of people, sorted by last name
       description: Read the entire set of people, sorted by last name
+      security:
+#        - basic: []
+        - jwt: ['secret']
       responses:
         "200":
           description: Successfully read people set operation
@@ -320,6 +323,21 @@ paths:
       responses:
         "200":
           description: Successfully deleted a note
+  "/auth/login":
+    post:
+      operationId: auth.generate_token
+      tags:
+        - Authentication
+      security:
+        - basic: []
+      responses:
+        200:
+          description: secret response
+          content:
+            'text/plain':
+              schema:
+                type:
+                  string
 
 components:
   schemas:
@@ -362,6 +380,24 @@ components:
         lname:
           type: string
           description: Last name of person to create
+  securitySchemes:
+    # oauth2:
+    #   type: oauth2
+    #   x-tokenInfoFunc: auth.dummy_function
+    #   flows:
+    #     implicit:
+    #       authorizationUrl: http://localhost:5000/oauth2/dialog
+    #       scopes:
+    #         secret: Allow accessing secret
+    basic:
+        type: http
+        scheme: basic
+        x-basicInfoFunc: auth.basic_auth
+    jwt:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      x-bearerInfoFunc: auth.decode_token
 
 servers:
   - url: http://localhost:5000/api
