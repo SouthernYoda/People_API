@@ -1,3 +1,7 @@
+The project is based on the tutorial Python REST APIs With Flask, Connexion, and SQLAlchemy by: Doug Farrell
+
+link: https://realpython.com/flask-connexion-rest-api/
+
 Project Setup
 
 1. Create project foler
